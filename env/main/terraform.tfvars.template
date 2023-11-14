@@ -1,0 +1,5 @@
+project="<project id>"
+region="europe-west1"
+location="EU"
+credentials="<json with key>"
+sync_databases="<coma separated ids of notion db to sync>"

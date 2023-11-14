@@ -1,0 +1,6 @@
+terraform {
+  backend "gcs" {
+    bucket = "<uniqname>-tfstate"
+    prefix = "env/main"
+  }
+}

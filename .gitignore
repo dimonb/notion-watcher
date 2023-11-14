@@ -1,0 +1,10 @@
+env/main/.terraform*
+env/main/.generated*
+.vscode
+functions/notion-sync/node_modules*
+env/main/terraform.tfvars
+notion-watcher-2f9ea5835f4a.json
+env/main/backend.tf
+
+functions/notion-sync/index.js
+env/main/.DS_Store

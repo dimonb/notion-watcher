@@ -1,0 +1,22 @@
+{
+  "name": "notion-sync",
+  "version": "1.0.0",
+  "description": "Notion Sync function",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.3.0",
+    "@google-cloud/pubsub": "^4.0.7",
+    "@notionhq/client": "^2.2.13",
+    "firebase-admin": "^11.11.0"
+  },
+  "engines": {
+    "node": "20"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}
