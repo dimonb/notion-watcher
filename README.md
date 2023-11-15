@@ -1,4 +1,8 @@
-# Deployment Instructions
+# Notion Sync
+
+Sync Notion databases to Google Cloud Firestore.
+
+## Deployment Instructions
 
 1. Rename all files with `.template` extension in the `env/main` directory.
 2. Obtain the `.json` key from Google Cloud.
