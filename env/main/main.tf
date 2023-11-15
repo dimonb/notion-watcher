@@ -60,6 +60,7 @@ resource "google_cloudfunctions2_function" "notion_sync" {
         }
         environment_variables = {
             "NOTION_DATABASE_IDS" = var.sync_databases
+            "FIRESTORE_COLLECTION" = var.firestore_collection
         }
     }
 

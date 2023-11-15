@@ -16,10 +16,61 @@ const notion = new Client({ auth: process.env.NOTION_API_KEY });
 
 const functions = require('@google-cloud/functions-framework');
 
+function mapNotionTypeToFirestore(value) {
+  switch (value.type) {
+    case 'title':
+    case 'rich_text':
+      return value[value.type].length ? value[value.type][0].plain_text : null;
+    case 'relation':
+      return value.relation.map((relation) => relation.id);
+    case 'multi_select':
+      return value.multi_select.map((select) => select.name);
+    case 'select':
+      return value.select.name;
+    case 'date':
+      var v = value['date']
+      if (!v['end']) return v['start']?new Date(v['start']):null;
+      return {
+        'start': v['start']?new Date(v['start']):null, 
+        'end': v['end']?new Date(v['end']):null, 
+        'time_zone': v['time_zone']?v['time_zone']:null
+      };
+    case 'last_edited_time':
+      return new Date(value[value.type]);
+    case 'url':
+    case 'email':
+    case 'formula':
+    case 'number':
+    case 'checkbox':
+          return value[value.type];
+    case 'unique_id':
+      return `${value.unique_id.prefix}-${value.unique_id.number}`;
+    default:
+      console.debug(`Unknown property type '${value.type}'`);
+      return value;
+  }
+}
+
+function transformRecord(record) {
+  var newRecord = {
+    id: record.id,
+    created_time: record.created_time,
+    last_edited_time: record.last_edited_time
+  };
+  for (var key in record.properties) {
+    // console.debug('Processing key: ' + key)
+    var value = record.properties[key];
+    
+    // id is a reserved word in Firestore, so we use key instead
+    newRecord[value.type === 'unique_id'?'key':key] = mapNotionTypeToFirestore(value);    
+  }
+  newRecord.raw = record;
+  return newRecord;
+}
 
 // Function to fetch new records from Notion and process them
 async function fetchNewNotionRecords(database_id) {
-  const dbRef = db.collection('processed_records').doc(database_id);
+  const dbRef = db.collection(process.env.FIRSTORE_COLLECTION).doc(database_id);
   const doc = await dbRef.get();
   
   const lastProcessedAt = doc.exists?doc.data().processedAt:null;
@@ -56,11 +107,11 @@ async function fetchNewNotionRecords(database_id) {
       
       if (doc.exists) {
         console.debug(`Updating record ${record.id}`);
-        return docRef.update(record);
+        return docRef.update(transformRecord(record));
       }
 
       console.debug(`Creating record ${record.id}`);
-      return docRef.set(record);
+      return docRef.set(transformRecord(record));
     });
 
     await Promise.all(promises);
