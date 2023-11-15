@@ -70,7 +70,7 @@ function transformRecord(record) {
 
 // Function to fetch new records from Notion and process them
 async function fetchNewNotionRecords(database_id) {
-  const dbRef = db.collection(process.env.FIRSTORE_COLLECTION).doc(database_id);
+  const dbRef = db.collection(process.env.FIRESTORE_COLLECTION).doc(database_id);
   const doc = await dbRef.get();
   
   const lastProcessedAt = doc.exists?doc.data().processedAt:null;
