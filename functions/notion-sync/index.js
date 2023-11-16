@@ -44,7 +44,7 @@ function mapNotionTypeToFirestore(value) {
     case 'checkbox':
           return value[value.type];
     case 'unique_id':
-      return `${value.unique_id.prefix}-${value.unique_id.number}`;
+      return value.unique_id.prefix?`${value.unique_id.prefix}-${value.unique_id.number}`:value.unique_id.number;
     default:
       console.debug(`Unknown property type '${value.type}'`);
       return value;
