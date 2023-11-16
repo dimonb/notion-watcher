@@ -6,7 +6,7 @@ Sync Notion databases to Google Cloud Firestore.
 
 1. Rename all files with `.template` extension in the `env/main` directory.
 2. Obtain the `.json` key from Google Cloud.
-3. Enable google api for the project: `gcloud services enable cloudbuild.googleapis.com cloudscheduler.googleapis.com cloudfunctions.googleapis.com compute.googleapis.com eventarc.googleapis.com run.googleapis.com secretmanager.googleapis.com --project=<YOUR PROJECT>` 
+3. Enable google api for the project: `gcloud services enable cloudbuild.googleapis.com cloudscheduler.googleapis.com cloudfunctions.googleapis.com compute.googleapis.com eventarc.googleapis.com run.googleapis.com secretmanager.googleapis.com firestore.googleapis.com --project=<YOUR PROJECT>` 
 4. Enable Firestore in native mode.
 5. Create a storage bucket in GCS to maintain the state; use the designated name in `backend.tf`.
 6. Acquire the Notion API key from [Notion's Integrations Page](https://www.notion.so/my-integrations). Store this key in the GCP Secret Manager under the name `NOTION_API_KEY`. Ensure the Cloud Build service account has access to it.
